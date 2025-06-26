@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aayan | Thunder Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 🔊 Music Activation Notice -->
+  <div id="click-to-play-msg">🔊 Tap anywhere to start music and voice</div>
+  <audio id="bg-music" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <div class="container">
+    <main>
+      <section class="hero">
+        <h1 class="thunder">Hello, I'm <span class="name">Aayan Kumar Chauhan</span> 👨‍🚀</h1>
+        <p class="typed-text" id="typed-text"></p>
+      </section>
+
+      <section class="about">
+        <h2 class="section-title thunder">🧠 About Me</h2>
+        <p>I’m Aayan — a creative front-end sci-fi nerd, and future scientist. My science glows. Literally.</p>
+      </section>
+
+      <section class="infocards">
+        <h2 class="section-title thunder">📋 My Info</h2>
+        <div class="info-card"><span class="typed-card" data-text="👤 Name: Aayan K.Ch"></span></div>
+        <div class="info-card"><span class="typed-card" data-text="🎂 Age: 13"></span></div>
+        <div class="info-card"><span class="typed-card" data-text="🚀 Mission: My plans are unbelievable"></span></div>
+        <div class="info-card"><span class="typed-card" data-text="💡 Skills: Vedic Maths, Chess Master, Unbelievable"></span></div>
+        <div class="info-card"><span class="typed-card" data-text="🎮 Hobbies: Chess, Coding, Sci-Fi"></span></div>
+      </section>
+    </main>
+
+    <aside class="profile thunder-glow">
+      <img src="photo.png" alt="Aayan" />
+      <h3>Aayan Chauhan</h3>
+      <p>👨‍💻 Dev | ⚡ UI Crafter | 🚀 Space Lover</p>
+      <div class="info">Made with lightning and love.</div>
+    </aside>
+  </div>
+
+  <footer>
+    <p>⚡ Powered by Thunder & Dreams 🚀</p>
+  </footer>
+
+  <script>
+    // Typewriter effect for hero text
+    const phrases = [
+      "Front-end Sci-Fi Nerd ⚡",
+      "Future Scientist 🚀",
+      "Scientist",
+      "Creative 🎨",
+      "Electric Brain 🧠"
+    ];
+    const el = document.getElementById("typed-text");
+    let i = 0, j = 0, isDeleting = false;
+
+    function typeLoop() {
+      const current = phrases[i];
+      if (!isDeleting && j <= current.length) {
+        el.textContent = current.slice(0, j++);
+      } else if (isDeleting && j >= 0) {
+        el.textContent = current.slice(0, j--);
+      }
+      if (j === current.length + 1) isDeleting = true;
+      if (j === 0 && isDeleting) {
+        isDeleting = false;
+        i = (i + 1) % phrases.length;
+      }
+      setTimeout(typeLoop, isDeleting ? 40 : 80);
+    }
+    typeLoop();
+
+    // Typewriter for info cards
+    document.querySelectorAll('.typed-card').forEach((el, index) => {
+      const text = el.getAttribute('data-text');
+      let idx = 0;
+      function typeCard() {
+        if (idx < text.length) {
+          el.innerHTML += text.charAt(idx++);
+          setTimeout(typeCard, 30);
+        }
+      }
+      setTimeout(typeCard, 800 * index);
+    });
+
+    // 🔊 Music + Voice
+    const music = document.getElementById("bg-music");
+    const msg = document.getElementById("click-to-play-msg");
+
+    function activateAudio() {
+      music.volume = 0.5;
+      music.play().then(() => {
+        msg.remove();
+        const voice = new SpeechSynthesisUtterance("Welcome to Aayan's Thunder Portfolio. Buckle up, the storm has just begun.");
+        speechSynthesis.speak(voice);
+      }).catch(() => {
+        msg.innerText = "⚠️ Tap again to enable music & voice";
+      });
+      document.removeEventListener("click", activateAudio);
+    }
+
+    document.addEventListener("click", activateAudio);
+  </script>
+</body>
+</html>
